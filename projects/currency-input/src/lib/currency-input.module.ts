@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CurrencyInputComponent } from './currency-input.component';
+import { CurrencyInputDirective } from './currency-input.directive';
 
 
 
 @NgModule({
-  declarations: [
-    CurrencyInputComponent
-  ],
-  imports: [
-  ],
-  exports: [
-    CurrencyInputComponent
-  ]
+  declarations: [CurrencyInputDirective],
+  imports: [],
+  providers: [],
+  exports: [CurrencyInputDirective]
 })
 export class CurrencyInputModule { }

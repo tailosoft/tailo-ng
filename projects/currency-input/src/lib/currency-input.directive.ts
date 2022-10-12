@@ -1,5 +1,6 @@
 import { Directive, ElementRef, forwardRef, HostListener, Input, Renderer2, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { getNumberOfCurrencyDigits } from '@angular/common';
 
 export const CURRENCY_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -12,7 +13,8 @@ export const CURRENCY_VALUE_ACCESSOR: any = {
   providers: [CURRENCY_VALUE_ACCESSOR]
 })
 export class CurrencyInputDirective implements ControlValueAccessor {
-  @Input() smallestUnitPerUnit = 100;
+  _smallestUnitPerUnit?: number | null;
+  @Input() code?: string;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -20,8 +22,29 @@ export class CurrencyInputDirective implements ControlValueAccessor {
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
   }
 
+  @Input()
+  set smallestUnitPerUnit(value: number | null | undefined) {
+    this._smallestUnitPerUnit = value;
+  }
+
+  get smallestUnitPerUnit(): number {
+    return this._smallestUnitPerUnit ?? 100;
+  }
+
+  ngOnChanges() {
+    if (!this._smallestUnitPerUnit) {
+      if (this.code) {
+        this._smallestUnitPerUnit = 10**getNumberOfCurrencyDigits(this.code);
+      } else {
+        this._smallestUnitPerUnit = 100;
+      }
+    }
+  }
+
   registerOnChange(fn: (_: number|null) => void): void {
-    this.onChange = (value) => { fn(value === '' ? null : parseFloat(value) * this.smallestUnitPerUnit); };
+    this.onChange = (value) => {
+      fn(value ? parseFloat(value) * this.smallestUnitPerUnit : value);
+    };
   }
 
   registerOnTouched(fn: any): void {

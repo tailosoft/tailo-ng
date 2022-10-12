@@ -136,6 +136,37 @@
           }
         }
       }
+    },
+    "currency-pipe": {
+      "projectType": "library",
+      "root": "projects/currency-pipe",
+      "sourceRoot": "projects/currency-pipe/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/currency-pipe/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/currency-pipe/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/currency-pipe/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/currency-pipe/src/test.ts",
+            "tsConfig": "projects/currency-pipe/tsconfig.spec.json",
+            "karmaConfig": "projects/currency-pipe/karma.conf.js"
+          }
+        }
+      }
     }
   }
 }

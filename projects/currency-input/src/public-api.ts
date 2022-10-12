@@ -3,4 +3,3 @@
  */
 
 export * from './lib/currency-input.directive';
-export * from './lib/currency-input.module';

@@ -62,10 +62,10 @@ describe('CurrencyInputDirective', () => {
       imports: [
         NoopAnimationsModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CurrencyInputDirective
       ],
       declarations: [
-        CurrencyInputDirective,
         TestCurrencyInputComponent
       ],
       providers: [

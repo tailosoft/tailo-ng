@@ -6,6 +6,9 @@
     "paths": {
       "currency-input": [
         "dist/currency-input"
+      ],
+      "currency-pipe": [
+        "dist/currency-pipe"
       ]
     },
     "outDir": "./dist/out-tsc",

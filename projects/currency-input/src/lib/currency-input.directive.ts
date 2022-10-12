@@ -10,7 +10,8 @@ export const CURRENCY_VALUE_ACCESSOR: any = {
 
 @Directive({
   selector: '[tCurrencyInput]',
-  providers: [CURRENCY_VALUE_ACCESSOR]
+  providers: [CURRENCY_VALUE_ACCESSOR],
+  standalone: true,
 })
 export class CurrencyInputDirective implements ControlValueAccessor {
   _smallestUnitPerUnit?: number | null;

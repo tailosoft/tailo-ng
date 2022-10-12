@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CurrencyInputDemoRoutingModule } from './currency-input-demo-routing.module';
 import { CurrencyInputDemoComponent } from './currency-input-demo/currency-input-demo.component';
 
-import { CurrencyInputModule } from '../../../../currency-input/src/lib/currency-input.module';
+import { CurrencyInputDirective } from '../../../../currency-input/src/lib/currency-input.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -17,7 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CurrencyInputDemoRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    CurrencyInputModule
+    CurrencyInputDirective
   ]
 })
 export class CurrencyInputDemoModule { }

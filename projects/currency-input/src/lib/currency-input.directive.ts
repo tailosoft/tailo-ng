@@ -1,4 +1,12 @@
-import { Directive, ElementRef, forwardRef, HostListener, Input, Renderer2, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  forwardRef,
+  HostListener,
+  Input,
+  Renderer2,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { getNumberOfCurrencyDigits } from '@angular/common';
 
@@ -8,38 +16,39 @@ export const CURRENCY_VALUE_ACCESSOR: any = {
   multi: true
 };
 
+const DEFAULT_SMALLEST_UNIT_PER_UNIT = 100; // since in angular DEFAULT_NB_OF_CURRENCY_DIGITS = 2;
+
 @Directive({
   selector: '[tCurrencyInput]',
   providers: [CURRENCY_VALUE_ACCESSOR],
   standalone: true,
 })
 export class CurrencyInputDirective implements ControlValueAccessor {
-  _smallestUnitPerUnit?: number | null;
-  @Input() code?: string;
+  _smallestUnitPerUnit = DEFAULT_SMALLEST_UNIT_PER_UNIT;
 
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private cd: ChangeDetectorRef) {
   }
 
   @Input()
   set smallestUnitPerUnit(value: number | null | undefined) {
-    this._smallestUnitPerUnit = value;
+    this._smallestUnitPerUnit = value ?? DEFAULT_SMALLEST_UNIT_PER_UNIT;
   }
 
   get smallestUnitPerUnit(): number {
-    return this._smallestUnitPerUnit ?? 100;
+    return this._smallestUnitPerUnit;
+  }
+
+  @Input()
+  set code(value: string) {
+      this._smallestUnitPerUnit = 10**getNumberOfCurrencyDigits(value);
   }
 
   ngOnChanges() {
-    if (!this._smallestUnitPerUnit) {
-      if (this.code) {
-        this._smallestUnitPerUnit = 10**getNumberOfCurrencyDigits(this.code);
-      } else {
-        this._smallestUnitPerUnit = 100;
-      }
-    }
+    this.onChange(this.elementRef.nativeElement.value);
+    this.cd.detectChanges();
   }
 
   registerOnChange(fn: (_: number|null) => void): void {

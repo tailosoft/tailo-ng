@@ -11,28 +11,33 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
     <input id="input2" tCurrencyInput type="number" [(ngModel)]="value2"><span id="span2">{{value2}}</span>
     <input id="input3" tCurrencyInput type="number" [(ngModel)]="value3" [smallestUnitPerUnit]="smallestUnitPerUnit"><span id="span3">{{value3}}</span>
     <input id="input4" tCurrencyInput type="number" [(ngModel)]="value4"><span id="span4">{{value4}}</span>
+    <input id="input5" tCurrencyInput type="number" [(ngModel)]="value5" [code]="code"><span id="span5">{{value5}}</span>
     <form name="reactiveForm" role="form" novalidate [formGroup]="form">
-      <input id="inputR1" tCurrencyInput formControlName="value1" type="number" step="1"><span id="spanR1">{{form.get('value1').value}}</span>
-      <input id="inputR2" tCurrencyInput formControlName="value2" type="number" step="2"><span id="spanR2">{{form.get('value2').value}}</span>
-      <input id="inputR3" tCurrencyInput formControlName="value3" type="number" step="3" [smallestUnitPerUnit]="smallestUnitPerUnit"><span id="spanR3">{{form.get('value3').value}}</span>
-      <input id="inputR4" tCurrencyInput formControlName="value4" type="number" step="4"><span id="spanR4">{{form.get('value4').value}}</span>
+      <input id="inputR1" tCurrencyInput formControlName="value1" type="number"><span id="spanR1">{{form.get('value1').value}}</span>
+      <input id="inputR2" tCurrencyInput formControlName="value2" type="number"><span id="spanR2">{{form.get('value2').value}}</span>
+      <input id="inputR3" tCurrencyInput formControlName="value3" type="number" [smallestUnitPerUnit]="smallestUnitPerUnit"><span id="spanR3">{{form.get('value3').value}}</span>
+      <input id="inputR4" tCurrencyInput formControlName="value4" type="number"><span id="spanR4">{{form.get('value4').value}}</span>
+      <input id="inputR5" tCurrencyInput formControlName="value5" type="number" [code]="code"><span id="spanR5">{{form.get('value5').value}}</span>
     </form>
   `
 })
 class TestCurrencyInputComponent {
 
   smallestUnitPerUnit = 10;
+  code = 'CHF';
 
   value1?: number;
   value2 = 12399;
   value3: any = '129';
   value4 = 'string';
+  value5 = 12300;
 
   form = this.fb.group({
     value1: [] as number[],
     value2: [12399],
     value3: ['129' as any],
-    value4: ['string']
+    value4: ['string'],
+    value5: [12300]
   });
 
   constructor(private fb: FormBuilder) {}
@@ -48,6 +53,8 @@ describe('CurrencyInputDirective', () => {
   let span3El: DebugElement;
   let input4El: DebugElement;
   let span4El: DebugElement;
+  let input5El: DebugElement;
+  let span5El: DebugElement;
   let inputR1El: DebugElement;
   let spanR1El: DebugElement;
   let inputR2El: DebugElement;
@@ -56,6 +63,8 @@ describe('CurrencyInputDirective', () => {
   let spanR3El: DebugElement;
   let inputR4El: DebugElement;
   let spanR4El: DebugElement;
+  let inputR5El: DebugElement;
+  let spanR5El: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -82,6 +91,8 @@ describe('CurrencyInputDirective', () => {
     span3El = fixture.debugElement.query(By.css('#span3'));
     input4El = fixture.debugElement.query(By.css('#input4'));
     span4El = fixture.debugElement.query(By.css('#span4'));
+    input5El = fixture.debugElement.query(By.css('#input5'));
+    span5El = fixture.debugElement.query(By.css('#span5'));
     inputR1El = fixture.debugElement.query(By.css('#inputR1'));
     spanR1El = fixture.debugElement.query(By.css('#spanR1'));
     inputR2El = fixture.debugElement.query(By.css('#inputR2'));
@@ -90,6 +101,8 @@ describe('CurrencyInputDirective', () => {
     spanR3El = fixture.debugElement.query(By.css('#spanR3'));
     inputR4El = fixture.debugElement.query(By.css('#inputR4'));
     spanR4El = fixture.debugElement.query(By.css('#spanR4'));
+    inputR5El = fixture.debugElement.query(By.css('#inputR5'));
+    spanR5El = fixture.debugElement.query(By.css('#spanR5'));
   });
 
   it('should display by default', () => {
@@ -151,7 +164,7 @@ describe('CurrencyInputDirective', () => {
     expect(spanR1El.nativeElement.innerHTML).toBe('199');
   }));
 
-  it('should have the correct value on value and smallestUnitPerUnit change', fakeAsync(() => {
+  it('should have the correct value on smallestUnitPerUnit change', fakeAsync(() => {
     fixture.detectChanges();
     tick();
     fixture.componentInstance.smallestUnitPerUnit = 1000;
@@ -165,5 +178,23 @@ describe('CurrencyInputDirective', () => {
     expect(span3El.nativeElement.innerHTML).toBe('123999');
     expect(inputR3El.nativeElement.value).toBe('123.999');
     expect(spanR3El.nativeElement.innerHTML).toBe('123999');
+  }));
+
+  it('should have the correct value on code change', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+    fixture.componentInstance.code = 'CHF';
+    fixture.detectChanges();
+    expect(input5El.nativeElement.value).toBe('123');
+    expect(span5El.nativeElement.innerHTML).toBe('12300');
+    expect(inputR5El.nativeElement.value).toBe('123');
+    expect(spanR5El.nativeElement.innerHTML).toBe('12300');
+    fixture.componentInstance.code = 'XOF';
+    fixture.detectChanges();
+    tick();
+    expect(input5El.nativeElement.value).toBe('123');
+    expect(span5El.nativeElement.innerHTML).toBe('123');
+    expect(inputR5El.nativeElement.value).toBe('123');
+    expect(spanR5El.nativeElement.innerHTML).toBe('123');
   }));
 });

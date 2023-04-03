@@ -20,3 +20,11 @@
 <div>
     <input tCurrencyInput [(ngModel)]="value3" type="number" [code]="'CHF'" step="0.01">{{value3}} CHF
 </div>
+<div>
+  <select [(ngModel)]="code">
+    <option value="CHF">CHF</option>
+    <option value="MAD">MAD</option>
+    <option value="XOF">XOF</option>
+  </select>
+  <input tCurrencyInput [(ngModel)]="value3" type="number" [code]="code" step="0.01">{{value3}} {{code}}
+</div>

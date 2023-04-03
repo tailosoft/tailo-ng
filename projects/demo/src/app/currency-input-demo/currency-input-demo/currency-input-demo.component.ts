@@ -8,6 +8,8 @@ import { FormBuilder } from '@angular/forms';
 })
 export class CurrencyInputDemoComponent implements OnInit {
 
+  code = 'CHF'
+
   form = this.fb.group({
     value1: [],
     value2: [12399],

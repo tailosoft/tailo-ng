@@ -53,7 +53,13 @@ export class CurrencyInputDirective implements ControlValueAccessor {
 
   registerOnChange(fn: (_: number|null) => void): void {
     this.onChange = (value) => {
-      fn(value ? parseFloat(value) * this.smallestUnitPerUnit : value);
+      if (!value) {
+        fn(value);
+      } else if (this.smallestUnitPerUnit > 1) {
+        fn(Math.round(parseFloat(value) * this.smallestUnitPerUnit));
+      } else {
+        fn(parseFloat(value) * this.smallestUnitPerUnit);
+      }
     };
   }
 

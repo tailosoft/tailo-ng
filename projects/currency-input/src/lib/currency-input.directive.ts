@@ -72,7 +72,7 @@ export class CurrencyInputDirective implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this.renderer.setProperty(this.elementRef.nativeElement, 'value', value ? value / this.smallestUnitPerUnit : '');
+    this.renderer.setProperty(this.elementRef.nativeElement, 'value', value != null ? value / this.smallestUnitPerUnit : '');
   }
 
   @HostListener('change', ['$event']) change(event: any) {
